@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+EXPOSE 80 443 22
+
 RUN apk update && apk upgrade
 
 RUN apk add vim

@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+EXPOSE 5050 443 80
+
 RUN apk update && apk upgrade
 
 RUN apk add vim bash zsh git wget curl
@@ -13,10 +15,13 @@ RUN echo 'alias vi="vim"' >> ~/.zshrc
 RUN apk add openrc
 RUN openrc boot
 
-ADD     tars/wordpress.tar.gz ~/
-RUN		tar -xzf ~/tars/wordpress.tar.gz -C  /usr/share/nginx/html/. \
-		&& mv config/wp-config.php /usr/share/nginx/html/wordpress/.
+RUN		apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl php7-mbstring php7-json php7-session
 
 
+ADD     ./tars/wordpress.tar.gz /
+#RUN		mv config/wp-config.php /usr/share/nginx/html/wordpress/.
+
+RUN apk add netcat-openbsd
 
 CMD zsh
+#CMD php -S 0.0.0.0:80 -t /wordpress
