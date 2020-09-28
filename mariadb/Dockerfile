@@ -15,17 +15,20 @@ RUN sed -i 's/robbyrussell/pygmalion/g' ~/.zshrc
 RUN apk add openrc
 RUN openrc boot
 
+#####################################   MARIADB #########################################
 RUN apk add mariadb mariadb-client
 
 RUN /etc/init.d/mariadb setup
 
 RUN service mariadb start && echo "  CREATE DATABASE wordpress;\
-  CREATE USER 'wp_user'@'%' IDENTIFIED BY 'pass';\
-  GRANT ALL ON wordpress.* TO 'wp_user'@'%' IDENTIFIED BY 'pass' WITH GRANT OPTION;\
-  CREATE USER 'admin'@'%' IDENTIFIED BY 'pass';\
-  GRANT ALL ON *.* TO 'admin'@'%' IDENTIFIED BY 'pass' WITH GRANT OPTION;\
+  CREATE USER 'wp_user'@'localhost' IDENTIFIED BY 'pass';\
+  GRANT ALL ON wordpress.* TO 'wp_user'@'localhost' IDENTIFIED BY 'pass' WITH GRANT OPTION;\
+  CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pass';\
+  GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'pass' WITH GRANT OPTION;\
   FLUSH PRIVILEGES;\
 EOF" | mysql --user=root << EOF
+
+####################################################################################
 
 EXPOSE 3306
 
