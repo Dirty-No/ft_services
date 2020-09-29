@@ -30,13 +30,14 @@ ARG     pma_path="/phpMyAdmin"
 ADD     ./tars/phpMyAdmin.tar.gz /
 ADD     ./config/config.inc.php ${pma_path}
 RUN     sed -i "s/_DATABASE_IP_LABEL_/${database_ip}/g" ${pma_path}/config.inc.php
-RUN     sed -i "s/_DATABASE_PORT_LAEL_/${database_port}/g" ${pma_path}/config.inc.php
+RUN     sed -i "s/_DATABASE_PORT_LABEL_/${database_port}/g" ${pma_path}/config.inc.php
 
 
 ###########################################################################################################
 
-ARG service_ports="8080"
+ENV SERVICE_PORTS="8080"
 
+RUN echo "php -S 0.0.0.0:$SERVICE_PORTS -t /phpMyAdmin &" > init.sh
 
-CMD ifconfig | grep inet && echo "PORTS: 8080" && php -S 0.0.0.0:8080 -t ${pma_path}c
+CMD ifconfig | grep inet && echo "PORTS: $SERVICE_PORTS" && sh init.sh && zsh
 #CMD ifconfig | grep inet && php -S 0.0.0.0:8080 -t ${pma_path}

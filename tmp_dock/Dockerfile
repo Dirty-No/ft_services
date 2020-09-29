@@ -23,7 +23,7 @@ RUN openrc boot
 
 ###########################################################################################################
 
-ARG service_ports=""
+ARG SERVICE_PORTS=""
 
-CMD ifconfig | grep inet && echo "PORTS : ${service_ports}" && zsh
+CMD ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh
 

@@ -28,7 +28,7 @@ $i++;
 /* Authentication type */
 $cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
-$cfg['Servers'][$i]['host'] = 'localhost:8080';
+$cfg['Servers'][$i]['host'] = '_DATABASE_IP_LABEL_:_DATABASE_PORT_LABEL_';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = true;
 
@@ -37,10 +37,11 @@ $cfg['Servers'][$i]['AllowNoPassword'] = true;
  */
 
 /* User used to manipulate with storage */
- $cfg['Servers'][$i]['controlhost'] = '_DATABASE_IP_LABEL_';
- $cfg['Servers'][$i]['controlport'] = '_DATABASE_PORT_LAEL_';
- //$cfg['Servers'][$i]['controluser'] = 'anclarma';
- //$cfg['Servers'][$i]['controlpass'] = 'anclarma';
+
+ //$cfg['Servers'][$i]['controlhost'] = '_DATABASE_IP_LABEL_';
+ //$cfg['Servers'][$i]['controlport'] = '_DATABASE_PORT_LABEL_';
+ //$cfg['Servers'][$i]['controluser'] = 'root';
+ //$cfg['Servers'][$i]['controlpass'] = '';
 
 /* Storage database and tables */
 // $cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
