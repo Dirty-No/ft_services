@@ -1,0 +1,14 @@
+_DB_TYPE_LABEL_
+_DB_IP_LABEL_
+_DB_PORT_LABEL_
+_DB_NAME_LABEL_
+_DB_USER_LABEL_
+_DB_PASSWORD_LABEL_
+
+ARG port="3003"
+ARG db_type="mysql"
+ARG db_ip="172.17.0.2"
+ARG db_port="3306"
+ARG db_name="anclarma"
+ARG db_user="anclarma"
+ARG db_password="anclarma"

@@ -2,7 +2,7 @@ FROM alpine:latest
 
 ########################################## init ############################################################3
 
-EXPOSE 20 21 25565
+EXPOSE 21 20
 
 
 RUN apk update && apk upgrade
@@ -34,7 +34,28 @@ ADD ./conf/vsftpd.conf /etc/vsftpd
 
 ##########################################################################################################
 
-ENV SERVICE_PORTS="20 21 25565"
+######################################## SSL ############################################################
+
+#RUN apk add openssh openssh-server
+#RUN ssh-keygen -A
+#ADD sshd_config /etc/ssh/sshd_config
+
+RUN yes 'root' | passwd
+
+
+RUN apk add openssl
+
+ARG ssl_path="/etc/ssl"
+ARG ssl_key="${ssl_path}/ftp-selfsigned.key"
+ARG ssl_cert="${ssl_path}/ftp-selfsigned.crt"
+
+RUN mkdir -p ${ssl_path}
+RUN openssl req -x509 -nodes -subj '/CN=localhost' -days 365 -newkey rsa:2048 -keyout ${ssl_key} -out ${ssl_cert}
+
+##########################################################################################################
+
+
+ENV SERVICE_PORTS="21"
 
 
 CMD service vsftpd restart && ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh

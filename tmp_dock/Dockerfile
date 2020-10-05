@@ -18,6 +18,7 @@ RUN openrc boot
 
 RUN apk add netcat-openbsd
 
+RUN yes 'root' | passwd
 
 ###########################################################################################################
 
@@ -28,5 +29,5 @@ RUN apk add netcat-openbsd
 
 ENV SERVICE_PORTS=""
 
-CMD service vsftpd restart && ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh
+CMD ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh
 
