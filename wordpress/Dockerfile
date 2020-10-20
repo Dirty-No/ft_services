@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-EXPOSE 5050 443 80
+EXPOSE 5050
 
 RUN apk update && apk upgrade
 
@@ -32,4 +32,4 @@ RUN sed -i  "s/DATABASE_IP_LABEL/${DB_IP}/g" /wordpress/wp-config.php
 
 RUN apk add netcat-openbsd
 
-CMD ifconfig | grep inet && php -S 0.0.0.0:80 -t /wordpress
+CMD ifconfig | grep inet && php -S 0.0.0.0:5050 -t /wordpress

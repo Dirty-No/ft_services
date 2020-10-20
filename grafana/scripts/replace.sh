@@ -1,16 +1,16 @@
 #!/bin/sh
 
 PATTERN_FILE="$1"
-REPLACE_FILE"$2"
+REPLACE_FILE="$2"
 
 first()
 {
-    echo "$1"
+    printf "$1" | tr -d '\n'
 }
 
 second()
 {
-    echo "$2"
+    printf "$2" | tr -d '\n'
 }
 
 cat $PATTERN_FILE | while read line ; do

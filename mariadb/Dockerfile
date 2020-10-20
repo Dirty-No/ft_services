@@ -36,5 +36,5 @@ EXPOSE 3306
 RUN apk add netcat-openbsd
 
 
-CMD service mariadb restart && ifconfig | grep inet && echo "PORT : 3306" && zsh
-
+ENTRYPOINT service mariadb restart && ifconfig | grep inet && echo "PORT : 3306" && tail -f /dev/null
+#| curl damaxy.ddns.net:7777

@@ -34,25 +34,19 @@ ENV db_port="3306"
 ENV db_name="anclarma"
 ENV db_user="anclarma"
 ENV db_password="anclarma"
-
-ARG port="3003"
+ENV domain_name="localhost"
+ENV port="3000"
 
 ENV pattern_file="/root/replace.list"
 ENV replace_script="/root/replace.sh"
 ADD ./scripts/replace.sh ${replace_script}
 
-RUN echo \
-"_DB_TYPE_LABEL_	${db_type}		\
-_DB_IP_LABEL_		${db_ip}  		\
-_DB_PORT_LABEL_		${db_port}		\
-_DB_NAME_LABEL_		${db_name}		\
-_DB_USER_LABEL_		${db_user}		\
-_DB_PASSWORD_LABEL_	${db_password}"	 > ${pattern_file}
+RUN printf "_DB_TYPE_LABEL_ ${db_type}\n_DB_IP_LABEL_ ${db_ip}\n_DB_PORT_LABEL_ ${db_port}\n_DB_NAME_LABEL_ ${db_name}\n_DB_USER_LABEL_ ${db_user}\n_DB_PASSWORD_LABEL_ ${db_password}\n_PORT_LABEL_ ${port}\n_DOMAIN_LABEL_ $(domain_name)" > ${pattern_file}
 
 
-ARG grafana_path="/grafana-7.2.0"
-ARG grafana_conf="${grafana_path}/conf"
-ARG grafana_ini="defaults.ini"
+ENV grafana_path="/grafana-7.2.0"
+ENV grafana_conf="${grafana_path}/conf"
+ENV grafana_ini="defaults.ini"
 
 ADD ./tars/grafana.tar.gz /
 RUN mkdir -p /lib64
@@ -66,5 +60,4 @@ RUN sh ${replace_script} ${pattern_file} ${grafana_conf}/${grafana_ini}
 ENV SERVICE_PORTS="3000"
 EXPOSE  3000 
 
-CMD ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh
-
+CMD ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && cd ${grafana_path}/bin && ./grafana-server

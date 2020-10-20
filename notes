@@ -1,0 +1,9 @@
+
+kubectl describe pods 
+kubectl get pods
+
+kubectl apply -f mariadb-deployment.yaml
+kubectl delete deployment mariadb-deployment
+kubectl rollout restart deployment mariadb-deployment
+
+eval $(minikube docker-env)
