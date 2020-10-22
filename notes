@@ -7,3 +7,6 @@ kubectl delete deployment mariadb-deployment
 kubectl rollout restart deployment mariadb-deployment
 
 eval $(minikube docker-env)
+
+
+
