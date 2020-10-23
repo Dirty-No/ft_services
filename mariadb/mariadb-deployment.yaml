@@ -20,3 +20,16 @@ spec:
         image: mariadb-image
         ports:
         - containerPort: 3306
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-service
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: LoadBalancer
