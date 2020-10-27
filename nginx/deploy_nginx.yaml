@@ -20,6 +20,7 @@ spec:
           containerPort: 80
         - name: https
           containerPort: 443
+      hostname: nginx
 
 ---
 apiVersion: v1
@@ -39,3 +40,4 @@ spec:
   selector:
     app: nginx
   type: LoadBalancer
+
