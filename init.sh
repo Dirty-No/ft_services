@@ -18,7 +18,16 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 kubectl apply -f srcs/config/metallb.yaml > /dev/null
 kubectl apply -f srcs/config/secret.yaml > /dev/null
 
-docker build -t my_nginx ./nginx/.
+services="nginx mariadb"
 
-kubectl apply -f nginx/deploy_nginx.yaml
+
+for service in $services
+do
+    echo "BUILDING $service"
+    docker build -t my_$service ./$service/.
+    echo "DEPLOYING $service"
+    kubectl apply -f ./$service/deploy_$service.yaml
+
+done
+
 minikube dashboard
