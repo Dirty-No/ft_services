@@ -23,6 +23,7 @@ RUN		apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl 
 
 ADD     ./tars/wordpress.tar.gz /
 ADD     ./config/wp-config.php /wordpress
+
 #RUN		mv config/wp-config.php /usr/share/nginx/html/wordpress/.
 
 ARG DB_IP="172.17.0.2:3306"
