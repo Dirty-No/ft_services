@@ -1,7 +1,5 @@
 FROM alpine:latest
 
-EXPOSE 80 443 22
-
 RUN apk update && apk upgrade
 
 RUN apk add vim
@@ -41,8 +39,9 @@ RUN printf "syntax on\nset nu\nset mouse=a" >> ~/.vimrc
 RUN apk add openrc
 RUN openrc boot
 
-CMD rc-service nginx start && /usr/sbin/sshd && cd /etc/nginx/ && zsh
+CMD rc-service nginx start && /usr/sbin/sshd && tail -f /dev/null
 
+EXPOSE 80 443
 
 #nginx -g "daemon off;"
 #nginx path : /etc/nginx
