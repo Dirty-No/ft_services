@@ -26,7 +26,8 @@ ADD     ./config/wp-config.php /wordpress
 
 #RUN		mv config/wp-config.php /usr/share/nginx/html/wordpress/.
 
-ARG DB_IP="172.17.0.2:3306"
+#ARG DB_IP="172.17.0.2:3306"
+ARG DB_IP="mariadb-service:3306"
 RUN sed -i  "s/DATABASE_IP_LABEL/${DB_IP}/g" /wordpress/wp-config.php
 
 ################################################################################################################3

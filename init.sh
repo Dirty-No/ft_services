@@ -18,7 +18,7 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 kubectl apply -f srcs/config/metallb.yaml > /dev/null
 kubectl apply -f srcs/config/secret.yaml > /dev/null
 
-services="nginx mariadb"
+services="nginx mariadb wordpress phpmyadmin"
 
 
 for service in $services
