@@ -53,8 +53,8 @@ delete()
 
 redeploy()
 {
-    delete_deployments "$1"
-    build_and_deploy "$1"
+    delete "$1"
+    deploy "$1"
 }
 
 setup_all()
@@ -63,7 +63,7 @@ setup_all()
 
     init_setup
     eval $(minikube docker-env)
-    build_and_deploy "$services"
+    deploy "$services"
     install_metallb
 
     minikube dashboard
@@ -81,10 +81,12 @@ print_error()
     PAD="%-7s"
     OPTIONS="deploy redeploy delete nuke"
     OPTIONS_FMT=""
+
     for opt in $OPTIONS
     do
         OPTIONS_FMT="$OPTIONS_FMT [-$opt]"
     done
+
     #OPTIONS_MSG=$(printf "$PAD%s" "Options:" "$OPTIONS_FMT")
     USAGE_MSG=$(printf "$PAD%s %s" "Usage:" "./init.sh" "$OPTIONS_FMT service_1 service_2 ...")
     ERR_MSG=$(printf "$PAD%s" "ERROR:" "$1")
@@ -111,6 +113,12 @@ main()
 
     OPT_FLAG=${1:0:1}
     SERVICES="${@:2}"
+
+    if [ "$SERVICES" = "all" ]
+    then
+        SERVICES="$DEFAULT_SERVICES"
+    fi
+
     if [ "$OPT_FLAG" = "-" ]
         then
             for opt in $OPTIONS
