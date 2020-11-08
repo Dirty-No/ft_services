@@ -2,7 +2,7 @@ FROM alpine:latest
 
 ########################################## init ############################################################3
 
-EXPOSE 21 20
+EXPOSE 21
 
 
 RUN apk update && apk upgrade
@@ -58,4 +58,5 @@ RUN openssl req -x509 -nodes -subj '/CN=localhost' -days 365 -newkey rsa:2048 -k
 ENV SERVICE_PORTS="21"
 
 
-CMD service vsftpd restart && ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh
+#CMD service vsftpd restart && ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && zsh
+CMD service vsftpd restart ; tail -f /dev/null

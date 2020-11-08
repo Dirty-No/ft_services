@@ -1,39 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: phpmyadmin-deploy
+  name: ftps-deploy
 spec:
   selector:
     matchLabels:
-      app: phpmyadmin
+      app: ftps
   template:
     metadata:
       labels:
-        app: phpmyadmin
+        app: ftps
     spec:
       containers:
-      - name: phpmyadmin
-        image: my_phpmyadmin
+      - name: ftps
+        image: my_ftps
         imagePullPolicy: "Never"
         ports:
         - name: https
-          containerPort: 5000
-      hostname: phpmyadmin
+          containerPort: 21
+      hostname: ftps
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: phpmyadmin-service
+  name: ftps-service
   annotations: 
     metallb.universe.tf/allow-shared-ip : nginx
 spec:
   ports:
-  - name: https
-    port: 5000
-    targetPort: 5000
+  - name: ftps
+    port: 21
+    targetPort: 21
     protocol: TCP
   selector:
-    app: phpmyadmin
+    app: ftps
   type: LoadBalancer
 

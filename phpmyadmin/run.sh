@@ -2,4 +2,4 @@
 
 image="phpmyadmin"
 docker build -t $image .
-docker run -p 8080:8080 -it $image
+docker run -p 5000:5000 -it $image

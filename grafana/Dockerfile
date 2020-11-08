@@ -29,12 +29,12 @@ RUN yes 'root' | passwd
 
 
 ENV db_type="mysql"
-ENV db_ip="172.17.0.2"
+ENV db_ip="mariadb-service"
 ENV db_port="3306"
 ENV db_name="anclarma"
 ENV db_user="anclarma"
 ENV db_password="anclarma"
-ENV domain_name="localhost"
+ENV domain_name="0.0.0.0"
 ENV port="3000"
 
 ENV pattern_file="/root/replace.list"
@@ -60,4 +60,7 @@ RUN sh ${replace_script} ${pattern_file} ${grafana_conf}/${grafana_ini}
 ENV SERVICE_PORTS="3000"
 EXPOSE  3000 
 
-CMD ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && cd ${grafana_path}/bin && ./grafana-server
+CMD cd ${grafana_path}/bin && ./grafana-server ; tail -f /dev/null
+
+
+#CMD ifconfig | grep inet && echo "PORTS : $SERVICE_PORTS" && cd ${grafana_path}/bin && ./grafana-server

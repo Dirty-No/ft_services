@@ -28,7 +28,7 @@ RUN		apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl 
 ARG     database_ip="mariadb-service"
 
 ARG     database_port="3306"
-ARG     pma_path="/phpMyAdmin"
+ENV     pma_path="/phpMyAdmin"
 
 ADD     ./tars/phpMyAdmin.tar.gz /
 ADD     ./config/config.inc.php ${pma_path}
@@ -38,11 +38,11 @@ RUN     sed -i "s/_DATABASE_PORT_LABEL_/${database_port}/g" ${pma_path}/config.i
 
 ###########################################################################################################
 
-ENV SERVICE_PORTS="8080"
+ENV SERVICE_PORTS="5000"
 
 #RUN echo "php -S 0.0.0.0:$SERVICE_PORTS -t /phpMyAdmin &" > init.sh
 
 #CMD ifconfig | grep inet && echo "PORTS: $SERVICE_PORTS" && sh init.sh && tail -f /dev/null
-#CMD ifconfig | grep inet && php -S 0.0.0.0:8080 -t ${pma_path}
-CMD tail -f /dev/null
-#php -S 0.0.0.0:8080 -t ${pma_path}
+#CMD ifconfig | grep inet && php -S 0.0.0.0:5000 -t ${pma_path}
+#CMD tail -f /dev/null
+CMD php -S 0.0.0.0:$SERVICE_PORTS -t ${pma_path}
