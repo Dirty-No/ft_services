@@ -15,7 +15,6 @@
  * cookie. Needs to be 32 chars long.
  */
 $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
-
 /**
  * Servers configuration
  */
@@ -31,6 +30,7 @@ $cfg['Servers'][$i]['auth_type'] = 'cookie';
 $cfg['Servers'][$i]['host'] = '_DATABASE_IP_LABEL_:_DATABASE_PORT_LABEL_';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = true;
+$cfg['PmaAbsoluteUri'] = '/phpmyadmin/';
 
 /**
  * phpMyAdmin configuration storage settings.

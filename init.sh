@@ -69,17 +69,23 @@ setup_all()
     minikube dashboard
 }
 
-nuke()
+reset()
 {
     eval $(minikube docker-env)
     minikube delete
+}
+
+nuke()
+{
+    eval $(minikube docker-env)
+    reset
     sudo docker system prune
 }
 
 print_error()
 {
     PAD="%-7s"
-    OPTIONS="deploy redeploy delete nuke"
+    OPTIONS="deploy redeploy delete reset nuke"
     OPTIONS_FMT=""
 
     for opt in $OPTIONS
@@ -96,7 +102,7 @@ print_error()
 main()
 {
     ARGC=$#
-    OPTIONS="deploy redeploy delete nuke"
+    OPTIONS="deploy redeploy delete reset nuke"
     DEFAULT_SERVICES='nginx mariadb wordpress phpmyadmin ftps grafana'
 
     if [ $ARGC -eq 0 ]
