@@ -37,6 +37,13 @@ ENV db_password="anclarma"
 ENV domain_name="0.0.0.0"
 ENV port="3000"
 
+ENV influx_host="influxdb-service"
+ENV influx_port='8086'
+ENV influx_user="anclarma"
+ENV influx_password="anclarma"
+ENV influx_name='influxdb'
+ENV datasource_name='influxdb'
+
 ENV pattern_file="/root/replace.list"
 ENV replace_script="/root/replace.sh"
 ADD ./scripts/replace.sh ${replace_script}
@@ -48,6 +55,7 @@ ENV grafana_path="/grafana-7.2.0"
 ENV grafana_conf="${grafana_path}/conf"
 ENV grafana_ini="defaults.ini"
 
+ADD ./conf ${grafana_conf}
 ADD ./tars/grafana.tar.gz /
 RUN mkdir -p /lib64
 RUN cp /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2

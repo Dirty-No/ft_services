@@ -65,6 +65,7 @@ setup_all()
     eval $(minikube docker-env)
     deploy "$services"
     install_metallb
+    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
     minikube dashboard
 }
@@ -73,6 +74,7 @@ reset()
 {
     eval $(minikube docker-env)
     minikube delete
+    main 
 }
 
 nuke()
@@ -85,7 +87,7 @@ nuke()
 print_error()
 {
     PAD="%-7s"
-    OPTIONS="deploy redeploy delete reset nuke"
+    OPTIONS="deploy redeploy delete reset nuke shell"
     OPTIONS_FMT=""
 
     for opt in $OPTIONS
@@ -99,11 +101,22 @@ print_error()
     printf "%s.\n%s\n" "$ERR_MSG" "$USAGE_MSG"
 }
 
+first()
+{
+    echo "$1"
+}
+
+shell()
+{
+    CONTAINER=$(first $(kubectl get pods | grep "$1"))
+    kubectl exec -it "$CONTAINER" -- sh
+}
+
 main()
 {
     ARGC=$#
-    OPTIONS="deploy redeploy delete reset nuke"
-    DEFAULT_SERVICES='nginx mariadb wordpress phpmyadmin ftps grafana'
+    OPTIONS="deploy redeploy delete reset nuke shell"
+    DEFAULT_SERVICES='nginx mariadb wordpress phpmyadmin ftps grafana influxdb'
 
     if [ $ARGC -eq 0 ]
         then
