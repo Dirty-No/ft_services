@@ -53,7 +53,11 @@ RUN printf "_DB_TYPE_LABEL_ ${db_type}\n_DB_IP_LABEL_ ${db_ip}\n_DB_PORT_LABEL_ 
 
 ENV grafana_path="/grafana-7.2.0"
 ENV grafana_conf="${grafana_path}/conf"
+ENV grafana_dashboards="/var/lib/grafana/dashboards"
 ENV grafana_ini="defaults.ini"
+
+RUN mkdir -p ${grafana_dashboards}
+ADD ./dashboards ${grafana_dashboards}
 
 ADD ./conf ${grafana_conf}
 ADD ./tars/grafana.tar.gz /
