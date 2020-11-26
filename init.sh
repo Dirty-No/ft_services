@@ -92,7 +92,7 @@ print_error()
 
     for opt in $OPTIONS
     do
-        OPTIONS_FMT="$OPTIONS_FMT [-$opt]"
+        OPTIONS_FMT="$OPTIONS_FMT [$opt]"
     done
 
     #OPTIONS_MSG=$(printf "$PAD%s" "Options:" "$OPTIONS_FMT")
@@ -112,10 +112,38 @@ shell()
     kubectl exec -it "$CONTAINER" -- sh
 }
 
+stress()
+{
+    ip="172.17.0.2"
+    services="nginx mariadb wordpress phpmyadmin ftps grafana"
+    hosts=("$ip" "$ip:3306" "$ip:5050" "$ip:5000" "$ip:21" "$ip:3000" )
+
+    count=0
+    while [ 1 ]
+    do
+        index=0
+        line_count=2
+        printf "STRESS TEST ON %s:\n\n" "$@"
+        for service in $services
+        do
+            flag=$(echo "$@" | grep -o "$service")
+            if [ ! -z "$flag" ]
+            then
+                let "count+=1"
+                let "line_count+=1"
+                printf "\t- SENDING HTTP REQUEST %d TO %-10s at ${hosts[$index]}\n" "$count" "$service"
+                curl -s -L ${hosts[$index]} --insecure > /dev/null &
+            fi
+            let "index+=1"
+        done
+        tput cuu "$line_count"
+    done
+}
+
 main()
 {
     ARGC=$#
-    OPTIONS="deploy redeploy delete reset nuke shell"
+    OPTIONS="deploy redeploy delete reset nuke shell stress"
     DEFAULT_SERVICES='nginx mariadb wordpress phpmyadmin ftps grafana influxdb'
 
     if [ $ARGC -eq 0 ]
@@ -130,29 +158,24 @@ main()
             exit
     fi
 
-    OPT_FLAG=${1:0:1}
     SERVICES="${@:2}"
 
-    if [ "$SERVICES" = "all" ]
+    if [ "$SERVICES" = all ]
     then
         SERVICES="$DEFAULT_SERVICES"
     fi
 
-    if [ "$OPT_FLAG" = "-" ]
-        then
-            for opt in $OPTIONS
-            do
-                func=${1:1}
-                if [ "$opt" =  "$func" ]
-                    then
-                        $func "$SERVICES"
-                        exit
-                fi
-            done
-        print_error "Unknown option '$1'"
-        exit
-    fi
-    print_error "Unknown error."
+    for opt in $OPTIONS
+    do
+        func=$1
+        if [ "$opt" =  "$func" ]
+            then
+                $func "$SERVICES"
+                exit
+        fi
+    done
+
+    print_error "Invalid arguments."
 }
 
 main $@
