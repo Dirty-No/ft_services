@@ -35,5 +35,5 @@ spec:
     protocol: TCP
   selector:
     app: mariadb
-  type: LoadBalancer
+  type: ClusterIP
 

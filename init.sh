@@ -108,15 +108,16 @@ first()
 
 shell()
 {
-    CONTAINER=$(first $(kubectl get pods | grep "$1"))
-    kubectl exec -it "$CONTAINER" -- sh
+    POD=$(first $(kubectl get pods | grep "$1"))
+    echo "Opening shell in pod $POD:"
+    kubectl exec -it "$POD" -- sh
 }
 
 stress()
 {
     ip="172.17.0.2"
-    services="nginx mariadb wordpress phpmyadmin ftps grafana"
-    hosts=("$ip" "$ip:3306" "$ip:5050" "$ip:5000" "$ip:21" "$ip:3000" )
+    services="nginx mariadb wordpress phpmyadmin ftps grafana influxdb"
+    ports=("80" "3306" "5050" "5000" "21" "3000" "8086")
 
     count=0
     while [ 1 ]
@@ -131,8 +132,16 @@ stress()
             then
                 let "count+=1"
                 let "line_count+=1"
-                printf "\t- SENDING HTTP REQUEST %d TO %-10s at ${hosts[$index]}\n" "$count" "$service"
-                curl -s -L ${hosts[$index]} --insecure > /dev/null &
+                if [ "$service" = "influxdb" ] || [ "$service" = "mariadb" ]
+                then 
+                    CONTAINER=$(first $(kubectl get pods | grep "nginx"))
+                    printf "\t- SENDING HTTP REQUEST %d TO %-10s AT %s:%d FROM $CONTAINER\n" "$count" "$service" "$service-service" "${ports[$index]}"
+                    kubectl exec -t $CONTAINER -- wget $service-service:${ports[index]} > /dev/null 2>&1 &
+                else
+                    printf "\t- SENDING HTTP REQUEST %d TO %-10s AT %s:%d\n" "$count" "$service" "$ip" "${ports[$index]}"
+                    curl -s -L $ip:${ports[index]} --insecure > /dev/null &
+                fi
+
             fi
             let "index+=1"
         done
