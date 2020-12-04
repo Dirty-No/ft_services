@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin-deploy
+spec:
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      containers:
+      - name: phpmyadmin
+        image: my_phpmyadmin
+        imagePullPolicy: "Never"
+        ports:
+        - name: https
+          containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /nginx_status
+            port: 5000
+          initialDelaySeconds: 3
+          periodSeconds: 3
+      hostname: phpmyadmin
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-service
+  annotations: 
+    metallb.universe.tf/allow-shared-ip : nginx
+spec:
+  ports:
+  - name: https
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: phpmyadmin
+  type: LoadBalancer
+

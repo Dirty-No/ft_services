@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tmp-deploy
+spec:
+  selector:
+    matchLabels:
+      app: tmp
+  template:
+    metadata:
+      labels:
+        app: tmp
+    spec:
+      containers:
+      - name: tmp
+        image: my_tmp:latest
+        imagePullPolicy: "Never"
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+      hostname: tmp
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tmp-service
+  annotations: 
+    metallb.universe.tf/allow-shared-ip: nginx
+
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
+  selector:
+    app: tmp
+  type: LoadBalancer
