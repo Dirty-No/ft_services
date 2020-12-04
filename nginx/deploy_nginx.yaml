@@ -20,6 +20,13 @@ spec:
           containerPort: 80
         - name: https
           containerPort: 443
+        livenessProbe:
+          httpGet:
+            path: /nginx_status
+            port: 443
+            scheme: HTTPS
+          initialDelaySeconds: 3
+          periodSeconds: 3
       hostname: nginx
 
 ---

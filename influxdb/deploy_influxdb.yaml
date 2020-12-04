@@ -21,10 +21,15 @@ spec:
         volumeMounts:
         - name: telegraf-endpoint
           mountPath: "/var/run/docker.sock"
+        - name: influxdb-persistent-storage
+          mountPath: /var/lib/influxdb
       volumes:
       - name: telegraf-endpoint
         hostPath:
           path: /var/run/docker.sock
+      - name: influxdb-persistent-storage
+        persistentVolumeClaim:
+          claimName: influxdb-pvc
       hostname: influxdb
 
 ---

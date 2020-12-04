@@ -21,7 +21,7 @@ install_metallb()
     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml > /dev/null
     kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" > /dev/null
     kubectl apply -f srcs/config/metallb.yaml > /dev/null
-    kubectl apply -f srcs/config/secret.yaml > /dev/null
+   # kubectl apply -f srcs/config/secret.yaml > /dev/null
 }
 
 deploy()
@@ -65,7 +65,7 @@ setup_all()
     eval $(minikube docker-env)
     deploy "$services"
     install_metallb
-    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  #  kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
     minikube dashboard
 }
@@ -87,7 +87,7 @@ nuke()
 print_error()
 {
     PAD="%-7s"
-    OPTIONS="deploy redeploy delete reset nuke shell"
+    OPTIONS="deploy redeploy delete reset nuke shell kill"
     OPTIONS_FMT=""
 
     for opt in $OPTIONS
@@ -106,9 +106,21 @@ first()
     echo "$1"
 }
 
+get_pod()
+{
+    first $(kubectl get pods | grep "$1")
+}
+
+kill()
+{
+    POD=$(get_pod "$1")
+    echo "Deleting pod $POD:"
+    kubectl delete -n default pod $POD
+}
+
 shell()
 {
-    POD=$(first $(kubectl get pods | grep "$1"))
+    POD=$(get_pod "$1")
     echo "Opening shell in pod $POD:"
     kubectl exec -it "$POD" -- sh
 }
@@ -152,7 +164,7 @@ stress()
 main()
 {
     ARGC=$#
-    OPTIONS="deploy redeploy delete reset nuke shell stress"
+    OPTIONS="deploy redeploy delete reset nuke kill shell stress"
     DEFAULT_SERVICES='nginx mariadb wordpress phpmyadmin ftps grafana influxdb'
 
     if [ $ARGC -eq 0 ]

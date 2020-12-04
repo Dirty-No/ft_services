@@ -18,6 +18,12 @@ spec:
         ports:
         - name: https
           containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /nginx_status
+            port: 5000
+          initialDelaySeconds: 3
+          periodSeconds: 3
       hostname: phpmyadmin
 
 ---
