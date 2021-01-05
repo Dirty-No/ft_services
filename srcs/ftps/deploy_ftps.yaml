@@ -22,6 +22,9 @@ spec:
           containerPort: 20
         - name: pasv
           containerPort: 8975
+        livenessProbe:
+         tcpSocket:
+           port: 21
       hostname: ftps
 
 ---
