@@ -33,6 +33,9 @@ spec:
         ports:
         - name: https
           containerPort: 3306
+        livenessProbe:
+          tcpSocket:
+            port: 3306
         volumeMounts:
         - name: mariadb-persistent-storage
           mountPath: /var/lib/mysql

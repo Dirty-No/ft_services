@@ -18,6 +18,9 @@ spec:
         ports:
         - name: api
           containerPort: 8086
+        livenessProbe:
+          tcpSocket:
+           port: 8086
         volumeMounts:
         - name: telegraf-endpoint
           mountPath: "/var/run/docker.sock"
