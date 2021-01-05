@@ -16,8 +16,12 @@ spec:
         image: my_ftps
         imagePullPolicy: "Never"
         ports:
-        - name: https
+        - name: cmd
           containerPort: 21
+        - name: data
+          containerPort: 20
+        - name: pasv
+          containerPort: 8975
       hostname: ftps
 
 ---
@@ -29,9 +33,17 @@ metadata:
     metallb.universe.tf/allow-shared-ip : nginx
 spec:
   ports:
-  - name: ftps
+  - name: cmd
     port: 21
     targetPort: 21
+    protocol: TCP
+  - name: data
+    port: 20
+    targetPort: 20
+    protocol: TCP
+  - name: pasv
+    port: 8975
+    targetPort: 8975
     protocol: TCP
   selector:
     app: ftps
