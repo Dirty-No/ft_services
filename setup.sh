@@ -80,7 +80,7 @@ reset()
 nuke()
 {
     eval $(minikube docker-env)
-    reset
+    minikube delete
     sudo docker system prune
 }
 
