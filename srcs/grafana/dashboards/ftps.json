@@ -97,7 +97,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }
@@ -172,7 +172,7 @@
           "measurement": "docker_container_cpu",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(mean(\"rx_bytes\"), 10s) FROM \"docker_container_net\" WHERE (\"annotation.io.kubernetes.container.ports\" = '[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]') AND $timeFilter GROUP BY time(10s) fill(null)",
+          "query": "SELECT non_negative_derivative(mean(\"rx_bytes\"), 10s) FROM \"docker_container_net\" WHERE (\"annotation.io.kubernetes.container.ports\" = '[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]') AND $timeFilter GROUP BY time(10s) fill(null)",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -194,7 +194,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }
@@ -339,7 +339,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }
@@ -476,7 +476,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }
@@ -622,7 +622,7 @@
                 {
                   "key": "annotation.io.kubernetes.container.ports",
                   "operator": "=",
-                  "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+                  "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
                 }
               ]
             }
@@ -753,7 +753,7 @@
                 {
                   "key": "annotation.io.kubernetes.container.ports",
                   "operator": "=",
-                  "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+                  "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
                 }
               ]
             }
@@ -902,7 +902,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }
@@ -1039,7 +1039,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }
@@ -1176,7 +1176,7 @@
             {
               "key": "annotation.io.kubernetes.container.ports",
               "operator": "=",
-              "value": "[{\"name\":\"https\",\"containerPort\":21,\"protocol\":\"TCP\"}]"
+              "value": "[{\"name\":\"cmd\",\"containerPort\":21,\"protocol\":\"TCP\"},{\"name\":\"data\",\"containerPort\":20,\"protocol\":\"TCP\"},{\"name\":\"pasv\",\"containerPort\":8975,\"protocol\":\"TCP\"}]"
             }
           ]
         }

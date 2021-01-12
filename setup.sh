@@ -1,5 +1,13 @@
 #!/bin/bash
 
+print_credentials()
+{
+	printf "%s:\n\t- user: %s\n\t- password: %s\n" grafana admin admin
+	printf "%s:\n\t- user: %s\n\t- password: %s\n" ftps root root
+	printf "%s:\n\t- user: %s\n\t- password: %s\n" phpmyadmin anclarma anclarma
+	printf "%s:\n\t- user: %s\n\t- password: %s\n" wordpress anclarma anclarma
+}
+
 init_setup()
 {
     sudo killall nginx
@@ -59,15 +67,15 @@ redeploy()
 
 setup_all()
 {
-    services="$1"
+  services="$1"
 
-    init_setup
-    eval $(minikube docker-env)
-    deploy "$services"
-    install_metallb
+  init_setup
+  eval $(minikube docker-env)
+  deploy "$services"
+  install_metallb
   #  kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-    minikube dashboard
+  print_credentials
+  minikube dashboard
 }
 
 reset()
@@ -164,7 +172,7 @@ stress()
 main()
 {
     ARGC=$#
-    OPTIONS="deploy redeploy delete reset nuke kill shell stress"
+    OPTIONS="deploy redeploy delete reset nuke kill shell stress print_credentials"
     DEFAULT_SERVICES='nginx mariadb wordpress phpmyadmin ftps grafana influxdb'
 
     if [ $ARGC -eq 0 ]
