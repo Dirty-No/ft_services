@@ -14,11 +14,12 @@ init_setup()
     sudo killall mysqld
     sudo killall vsftpf
 
-    sudo usermod -aG docker $(whoami);
 
     sudo service docker restart
 
-    minikube delete
+    #minikube delete
+    printf "user42\nuser42" | sudo -S chmod 666 /var/run/docker.sock
+    printf "user42\nuser42" | sudo usermod -aG docker $(whoami);
     minikube start --vm-driver=docker
 }
 
