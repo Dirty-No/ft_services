@@ -101,7 +101,7 @@ ADD		./config/www.conf /etc/php7/php-fpm.d/
 RUN     sed -i "s/_DATABASE_IP_LABEL_/${database_ip}/g" ${pma_path}/config.inc.php
 RUN     sed -i "s/_DATABASE_PORT_LABEL_/${database_port}/g" ${pma_path}/config.inc.php
 
-ENV     PMA_ABSOLUTE_URI="/phpmyadmin/"
+#ENV     PMA_ABSOLUTE_URI="/phpmyadmin/"
 
 ###########################################################################################################
 
