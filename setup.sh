@@ -16,46 +16,46 @@ init_setup()
 
     sudo service docker restart
 
-    minikube delete
+  #  ./src./srcs/minikube delete
     sudo chmod 666 /var/run/docker.sock
     sudo usermod -aG docker $(whoami);
-    ./minikube start --disk-size=5000MB --vm-driver=docker --kubernetes-version=1.18.1
+    ./srcs/minikube start --disk-size=5000MB --vm-driver=docker --kubernetes-version=1.18.1
 }
 
 install_metallb()
 {
-    eval $(./minikube docker-env)
-     ./minikube kubectl --  apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml > /dev/null
-     ./minikube kubectl --  apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml > /dev/null
-     ./minikube kubectl --  create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" > /dev/null
-     ./minikube kubectl --  apply -f srcs/config/metallb.yaml > /dev/null
-   #  ./minikube kubectl --  apply -f srcs/config/secret.yaml > /dev/null
+    eval $(./srcs/minikube docker-env)
+     ./srcs/minikube kubectl --  apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml > /dev/null
+     ./srcs/minikube kubectl --  apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml > /dev/null
+     ./srcs/minikube kubectl --  create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" > /dev/null
+     ./srcs/minikube kubectl --  apply -f srcs/config/metallb.yaml > /dev/null
+   #  ./srcs/minikube kubectl --  apply -f srcs/config/secret.yaml > /dev/null
 }
 
 deploy()
 {
-    eval $(./minikube docker-env)
+    eval $(./srcs/minikube docker-env)
     for service in $1
     do
         echo "BUILDING $service"
         docker build -t my_$service ./srcs/$service/.
         echo "DEPLOYING $service"
-         ./minikube kubectl --  apply -f ./srcs/$service/deploy_$service.yaml
+         ./srcs/minikube kubectl --  apply -f ./srcs/$service/deploy_$service.yaml
 
     done
 }
 
 delete()
 {
-    eval $(./minikube docker-env)
+    eval $(./srcs/minikube docker-env)
     for service in $1
     do
         deployment="$service-deploy"
         service="$service-service"
         echo "DELETING $deployment"
-         ./minikube kubectl --  delete deployment "$deployment"
+         ./srcs/minikube kubectl --  delete deployment "$deployment"
         echo "DELETING $service"
-         ./minikube kubectl --  delete service "$service"
+         ./srcs/minikube kubectl --  delete service "$service"
     done
 }
 
@@ -70,25 +70,25 @@ setup_all()
   services="$1"
 
   init_setup
-  eval $(./minikube docker-env)
+  eval $(./srcs/minikube docker-env)
   deploy "$services"
   install_metallb
-  #   ./minikube kubectl --  apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  #   ./srcs/minikube kubectl --  apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
   print_credentials
-  ./minikube dashboard
+  ./srcs/minikube dashboard
 }
 
 reset()
 {
-    eval $(./minikube docker-env)
-    ./minikube delete
+    eval $(./srcs/minikube docker-env)
+    ./srcs/minikube delete
     main 
 }
 
 nuke()
 {
-    eval $(./minikube docker-env)
-    ./minikube delete
+    eval $(./srcs/minikube docker-env)
+    ./srcs/minikube delete
     sudo docker system prune
 }
 
@@ -116,21 +116,21 @@ first()
 
 get_pod()
 {
-    first $( ./minikube kubectl --  get pods | grep "$1")
+    first $( ./srcs/minikube kubectl --  get pods | grep "$1")
 }
 
 kill()
 {
     POD=$(get_pod "$1")
     echo "Deleting pod $POD:"
-     ./minikube kubectl --  delete -n default pod $POD
+     ./srcs/minikube kubectl --  delete -n default pod $POD
 }
 
 shell()
 {
     POD=$(get_pod "$1")
     echo "Opening shell in pod $POD:"
-     ./minikube kubectl --  exec -it "$POD" -- sh
+     ./srcs/minikube kubectl --  exec -it "$POD" -- sh
 }
 
 stress()
@@ -154,9 +154,9 @@ stress()
                 let "line_count+=1"
                 if [ "$service" = "influxdb" ] || [ "$service" = "mariadb" ]
                 then 
-                    CONTAINER=$(first $( ./minikube kubectl --  get pods | grep "nginx"))
+                    CONTAINER=$(first $( ./srcs/minikube kubectl --  get pods | grep "nginx"))
                     printf "\t- SENDING HTTP REQUEST %d TO %-10s AT %s:%d FROM $CONTAINER\n" "$count" "$service" "$service-service" "${ports[$index]}"
-                     ./minikube kubectl --  exec -t $CONTAINER -- wget $service-service:${ports[index]} > /dev/null 2>&1 &
+                     ./srcs/minikube kubectl --  exec -t $CONTAINER -- wget $service-service:${ports[index]} > /dev/null 2>&1 &
                 else
                     printf "\t- SENDING HTTP REQUEST %d TO %-10s AT %s:%d\n" "$count" "$service" "$ip" "${ports[$index]}"
                     curl -s -L $ip:${ports[index]} --insecure > /dev/null &
