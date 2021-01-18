@@ -16,7 +16,7 @@ init_setup()
 
     sudo service docker restart
 
-  #  ./src./srcs/minikube delete
+    ./srcs/minikube delete
     sudo chmod 666 /var/run/docker.sock
     sudo usermod -aG docker $(whoami);
     ./srcs/minikube start --disk-size=5000MB --vm-driver=docker --kubernetes-version=1.18.1
